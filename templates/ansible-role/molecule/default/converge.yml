@@ -1,0 +1,9 @@
+---
+- name: Converge
+  hosts: localhost
+  gather_facts: false
+  tasks:
+    - name: "Include workspace"
+      ansible.builtin.include_role:
+        name: "ansible-role"
+        # name: "workspace"

@@ -1,0 +1,7 @@
+---
+- name: Create file with upper reverse content
+  ansible.builtin.copy:
+    content: |
+      Text: \{{ ans_text }}. Reverse: \{{ ans_reverse }}. Transformation: \{{ ans_transformation }}.
+    dest: "/tmp/generator-ansible-ansible-role-upper-reverse-content.txt"
+    mode: 0644
