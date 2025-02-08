@@ -1,4 +1,4 @@
-<img align="right" src="https://raw.github.com/cliffano/generator-ansible/master/avatar.jpg" alt="Avatar"/>
+<img align="right" src="https://raw.github.com/cliffano/generator-ansible/main/avatar.jpg" alt="Avatar"/>
 
 [![Build Status](https://github.com/cliffano/generator-ansible/workflows/CI/badge.svg)](https://github.com/cliffano/generator-ansible/actions?query=workflow%3ACI)
 [![Security Status](https://snyk.io/test/github/cliffano/generator-ansible/badge.svg)](https://snyk.io/test/github/cliffano/generator-ansible)
