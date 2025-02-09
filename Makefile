@@ -20,6 +20,8 @@ test-ansible-role:
 		--author_name "Pakkun" \
 		--github_id "pakkunbot" \
 		--github_repo "ansible-role"
-	cd stage/ansible-role/ && make ci
+	ln -s stage/ansible-role/ stage/workspace/
+	cd stage/workspace/ && make ci
+	rm -f stage/workspace/
 
 .PHONY: ci clean stage deps generate-ansible-role test-ansible-role
