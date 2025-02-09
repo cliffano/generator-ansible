@@ -5,5 +5,4 @@
   tasks:
     - name: "Include workspace"
       ansible.builtin.include_role:
-        name: "ansible-role"
-        # name: "workspace"
+        name: "workspace"
