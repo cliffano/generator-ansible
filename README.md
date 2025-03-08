@@ -27,7 +27,7 @@ Both components will prompt you the following inputs:
 
 | Prompt | Description |
 |--------|-------------|
-| Project ID | Used for Python package name and CLI command. |
+| Project ID | Used for Ansible Role name. |
 | Project Name | Used in documentation or comments. |
 | Project Description | Used in documentation or comments. |
 | Author Name | The name of the project author. |
