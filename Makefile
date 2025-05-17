@@ -3,13 +3,16 @@ ci: clean stage deps test-ansible-role
 clean:
 	rm -rf stage/
 
+clean-ansible-role:
+	rm -rf stage/ansible-role/
+
 stage:
 	mkdir -p stage/
 
 deps:
 	npm install .
 
-generate-ansible-role:
+generate-ansible-role: clean-ansible-role
 	node_modules/.bin/plop ansible-role
 
 test-ansible-role:
@@ -24,4 +27,4 @@ test-ansible-role:
 	cd stage/workspace && make ci
 	rm -f stage/workspace
 
-.PHONY: ci clean stage deps generate-ansible-role test-ansible-role
+.PHONY: ci clean clean-ansible-role stage deps generate-ansible-role test-ansible-role
