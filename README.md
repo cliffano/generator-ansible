@@ -1,6 +1,7 @@
 <img align="right" src="https://raw.github.com/cliffano/generator-ansible/main/avatar.jpg" alt="Avatar"/>
 
 [![Build Status](https://github.com/cliffano/generator-ansible/workflows/CI/badge.svg)](https://github.com/cliffano/generator-ansible/actions?query=workflow%3ACI)
+[![Code Scanning Status](https://github.com/cliffano/generator-ansible/workflows/CodeQL/badge.svg)](https://github.com/cliffano/generator-ansible/actions?query=workflow%3ACodeQL)
 [![Security Status](https://snyk.io/test/github/cliffano/generator-ansible/badge.svg)](https://snyk.io/test/github/cliffano/generator-ansible)
 
 Generator-Ansible
