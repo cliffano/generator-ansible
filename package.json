@@ -4,6 +4,6 @@
   "type": "module",
   "description": "",
   "devDependencies": {
-    "plop": "4.0.2"
+    "plop": "4.0.4"
   }
 }
