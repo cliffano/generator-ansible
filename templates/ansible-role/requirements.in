@@ -2,7 +2,6 @@ ansible-compat
 ansible-lint
 conflog
 docker
-minecraftverse
 molecule
 PyYAML
 pytest
