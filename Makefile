@@ -21,6 +21,7 @@ test-ansible-role:
 		--project_name "AnsibleRole" \
 		--project_desc "A sample Ansible Role project" \
 		--author_name "Pakkun" \
+		--author_email "blah+pakkun@cliffano.com" \
 		--github_id "pakkunbot" \
 		--github_repo "ansible-role"
 	cd stage && ln -s ansible-role/ workspace

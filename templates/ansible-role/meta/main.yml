@@ -4,7 +4,7 @@ dependencies: []
 galaxy_info:
   namespace: {{github_id}}
   role_name: {{project_id}}
-  author: {{author_name}}
+  author: {{author_name}} <{{author_email}}>
   description: {{project_desc}}
   license: "license (MIT)"
   min_ansible_version: 10.3.0
