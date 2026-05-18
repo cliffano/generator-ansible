@@ -23,7 +23,8 @@ test-ansible-role:
 		--author_name "Pakkun" \
 		--author_email "blah+pakkun@cliffano.com" \
 		--github_id "pakkunbot" \
-		--github_repo "ansible-role"
+		--github_repo "ansible-role" \
+		--github_token_prefix "STUDIO"
 	cd stage && ln -s ansible-role/ workspace
 	cd stage/workspace && make ci
 	rm -f stage/workspace
