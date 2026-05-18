@@ -11,3 +11,4 @@ generator:
     author_email: {{author_email}}
     github_id: {{github_id}}
     github_repo: {{github_repo}}
+    github_token_prefix: {{github_token_prefix}}
