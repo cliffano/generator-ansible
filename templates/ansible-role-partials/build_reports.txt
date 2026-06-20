@@ -1,0 +1,4 @@
+Build reports:
+
+* [Lint report](https://{{github_id}}.github.io/{{project_id}}/lint/ansible-lint/index.html)
+* [Code complexity report](https://{{github_id}}.github.io/{{project_id}}/complexity/index.html)
