@@ -53,7 +53,7 @@ test-ansible-role-partials:
 		--github_repo "ansible-role" \
 		--github_token_prefix "STUDIO"
 
-update-nebula-to-latest:
+update-cobbler-to-latest:
 	cd templates/ansible-role && make update-to-latest
 
-.PHONY: ci clean clean-ansible-role clean-ansible-role-partials stage deps generate-ansible-role test-ansible-role generate-ansible-role-partials test-ansible-role-partials update-nebula-to-latest
+.PHONY: ci clean clean-ansible-role clean-ansible-role-partials stage deps generate-ansible-role test-ansible-role generate-ansible-role-partials test-ansible-role-partials update-cobbler-to-latest
