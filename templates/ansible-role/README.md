@@ -14,11 +14,13 @@ To be populated by generator-ansible ansible-role-partials
 
 Use the role in your playbook:
 
-    - hosts: all
+```yaml
+- hosts: all
 
-      vars:
-        ans_reverse: true
-        ans_transformation: 'upper'
+  vars:
+    ans_reverse: true
+    ans_transformation: 'upper'
 
-      roles:
-        - {{github_id}}.{{project_id}}
+  roles:
+    - {{github_id}}.{{project_id}}
+```
