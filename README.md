@@ -34,3 +34,9 @@ Both components will prompt you the following inputs:
 | GitHub ID | The GitHub ID of the project repo. |
 | GitHub Repository | The GitHub repository name. |
 | GitHub Actions token prefix | Prefix for the GitHub token secret used in GitHub Actions workflows. |
+
+## Colophon
+
+Related Projects:
+
+* [Cobbler](https://github.com/cliffano/cobbler) - Makefile for building Ansible roles
