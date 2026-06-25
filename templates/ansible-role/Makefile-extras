@@ -1,0 +1,4 @@
+x-pre-test:
+	echo "Pre-test hook"
+
+.PHONY: x-pre-test
