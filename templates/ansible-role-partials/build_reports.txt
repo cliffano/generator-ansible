@@ -2,3 +2,4 @@ Build reports:
 
 * [Lint report](https://{{github_id}}.github.io/{{github_repo}}/lint/ansible-lint/index.html)
 * [Code complexity report](https://{{github_id}}.github.io/{{github_repo}}/complexity/index.html)
+
