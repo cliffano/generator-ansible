@@ -4,13 +4,19 @@
 ################################################################
 
 # Cobbler's version number
-COBBLER_VERSION = 2.1.0
+COBBLER_VERSION = 2.2.0
 
 $(info ################################################################)
 $(info Building Ansible role using Cobbler...)
 
 define python_venv
 	. .venv/bin/activate && $(1)
+endef
+
+define run_hook
+	@if [ -f Makefile-extras ] && grep -q "^$(1):" Makefile-extras; then \
+		$(MAKE) -f Makefile-extras $(1); \
+	fi
 endef
 
 ################################################################
@@ -51,6 +57,7 @@ lint:
 	$(call python_venv,yamllint .)
 
 test:
+	$(call run_hook,x-pre-test)
 	$(call python_venv,molecule test)
 
 test-examples:
