@@ -88,6 +88,7 @@ update-dotfiles: GENERATOR_INPUTS_AUTHOR_NAME = $(shell yq .generator.inputs.aut
 update-dotfiles: GENERATOR_INPUTS_AUTHOR_EMAIL = $(shell yq .generator.inputs.author_email cobbler.yml)
 update-dotfiles: GENERATOR_INPUTS_GITHUB_ID = $(shell yq .generator.inputs.github_id cobbler.yml)
 update-dotfiles: GENERATOR_INPUTS_GITHUB_REPO = $(shell yq .generator.inputs.github_repo cobbler.yml)
+update-partials: GENERATOR_INPUTS_GITHUB_TOKEN_PREFIX = $(shell yq .generator.inputs.github_token_prefix cobbler.yml)
 update-dotfiles: stage
 	cd stage/ && \
 	  rm -rf generator-ansible/ && \
@@ -101,7 +102,8 @@ update-dotfiles: stage
 		--author_name "$(GENERATOR_INPUTS_AUTHOR_NAME)" \
 		--author_email "$(GENERATOR_INPUTS_AUTHOR_EMAIL)" \
 		--github_id "$(GENERATOR_INPUTS_GITHUB_ID)" \
-		--github_repo "$(GENERATOR_INPUTS_GITHUB_REPO)"
+		--github_repo "$(GENERATOR_INPUTS_GITHUB_REPO)" \
+		--github_token_prefix "$(GENERATOR_INPUTS_GITHUB_TOKEN_PREFIX)"
 	cd stage/generator-ansible/stage/$(GENERATOR_COMPONENT) && \
 	  cp -R .github/* ../../../../.github/ && \
 	  cp .ansible-lint ../../../../.ansible-lint && \
