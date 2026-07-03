@@ -1,5 +1,5 @@
 Build reports:
 
-* [Lint report](https://{{github_id}}.github.io/{{github_repo}}/lint/ansible-lint/index.html)
-* [Code complexity report](https://{{github_id}}.github.io/{{github_repo}}/complexity/index.html)
+* [Lint report](https://{{github_id}}.github.io/{{github_repo}}/lint/ansible-lint/report.md)
+* [Test report](https://{{github_id}}.github.io/{{github_repo}}/test/molecule/report.txt)
 
