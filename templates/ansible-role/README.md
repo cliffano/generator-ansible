@@ -24,3 +24,13 @@ Use the role in your playbook:
   roles:
     - {{github_id}}.{{project_id}}
 ```
+
+## Colophon
+
+<!-- BEGIN:DEVELOPERS_GUIDE -->
+To be populated by generator-ansible ansible-role-partials
+<!-- END:DEVELOPERS_GUIDE -->
+
+<!-- BEGIN:BUILD_REPORTS -->
+To be populated by generator-ansible ansible-role-partials
+<!-- END:BUILD_REPORTS -->
