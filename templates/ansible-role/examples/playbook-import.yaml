@@ -1,0 +1,12 @@
+---
+- name: CobblerExample playbook import
+  hosts: localhost
+
+  tasks:
+
+    - name: Provision CobblerExample
+      ansible.builtin.import_role:
+        name: {{github_id}}.{{project_id}}
+      vars:
+        ans_reverse: true
+        ans_transformation: 'upper'

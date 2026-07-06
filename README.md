@@ -20,7 +20,9 @@ All components are built using [Makefile](https://en.wikipedia.org/wiki/Make_(so
 
 Generate Ansible Role project:
 
-    make generate-ansible-role
+```shell
+make generate-ansible-role
+```
 
 Both components will prompt you the following inputs:
 

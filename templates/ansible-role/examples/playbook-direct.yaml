@@ -1,0 +1,11 @@
+---
+- name: CobblerExample playbook direct
+  hosts: localhost
+
+  vars:
+    ans_reverse: false
+    ans_transformation: 'lower'
+
+  roles:
+
+    - role: {{github_id}}.{{project_id}}

@@ -18,11 +18,15 @@ Use the role in your playbook:
 - hosts: all
 
   vars:
-    ans_reverse: true
-    ans_transformation: 'upper'
+```yaml
+ans_reverse: true
+ans_transformation: 'upper'
+```
 
   roles:
-    - {{github_id}}.{{project_id}}
+```text
+- {{github_id}}.{{project_id}}
+```
 ```
 
 ## Colophon
