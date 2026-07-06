@@ -1,5 +1,5 @@
 # Start of Studio gitignore
-molecule/default/core
+core
 stage/
 # End of Studio gitignore
 
