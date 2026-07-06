@@ -18,5 +18,5 @@ jobs:
           image: cliffano/studio:3.2.0
       - uses: peaceiris/actions-gh-pages@v4
         with:
-          github_token: ${{ secrets.{{github_token_prefix}}_GITHUB_TOKEN }}
+          github_token: $\{{ secrets.{{github_token_prefix}}_GITHUB_TOKEN }}
           publish_dir: docs
