@@ -6,6 +6,13 @@ cd ../
 . ./.venv/bin/activate
 cd examples/
 
+# Example installation using remote published role on Ansible Galaxy
+# cd ../
+# . ./.venv/bin/activate
+# ansible-galaxy role install {{github_id}}.{{project_id}} --force --roles-path stage/test-examples/roles/
+# cd examples/
+
+# Example installation using local unpublished role
 # NOTE: `ansible-galaxy role install <path> --force` no longer works in
 # newer versions of ansible-core (2.21.1 is used).
 # Instead of installing the local directory as a role, newer versions
