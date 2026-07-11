@@ -4,7 +4,7 @@
 ################################################################
 
 # Cobbler's version number
-COBBLER_VERSION = 2.3.0
+COBBLER_VERSION = 2.4.0
 
 ################################################################
 # User configuration variables
@@ -18,18 +18,6 @@ PACKAGE_NAME=$(shell yq .package_name cobbler.yml)
 # AUTHOR is the author of the Ansible role
 AUTHOR ?= $(shell yq .author cobbler.yml)
 
-define set_generator_vars
-$(1): GENERATOR_COMPONENT = $$(shell yq .generator.component cobbler.yml)
-$(1): GENERATOR_INPUTS_PROJECT_ID = $$(shell yq .generator.inputs.project_id cobbler.yml)
-$(1): GENERATOR_INPUTS_PROJECT_NAME = $$(shell yq .generator.inputs.project_name cobbler.yml)
-$(1): GENERATOR_INPUTS_PROJECT_DESC = $$(shell yq .generator.inputs.project_desc cobbler.yml)
-$(1): GENERATOR_INPUTS_AUTHOR_NAME = $$(shell yq .generator.inputs.author_name cobbler.yml)
-$(1): GENERATOR_INPUTS_AUTHOR_EMAIL = $$(shell yq .generator.inputs.author_email cobbler.yml)
-$(1): GENERATOR_INPUTS_GITHUB_ID = $$(shell yq .generator.inputs.github_id cobbler.yml)
-$(1): GENERATOR_INPUTS_GITHUB_REPO = $$(shell yq .generator.inputs.github_repo cobbler.yml)
-$(1): GENERATOR_INPUTS_GITHUB_TOKEN_PREFIX = $$(shell yq .generator.inputs.github_token_prefix cobbler.yml)
-endef
-
 $(info ################################################################)
 $(info Building Ansible role using Cobbler...)
 $(info - Package name = ${PACKAGE_NAME})
@@ -38,6 +26,9 @@ $(info - Author = ${AUTHOR})
 define python_venv
 	. .venv/bin/activate && $(1)
 endef
+
+################################################################
+# MAKE IT SO - Utility functions
 
 define run_hook
 	@if [ -f Makefile-extras ] && grep -q "^$(1):" Makefile-extras; then \
@@ -53,6 +44,67 @@ define deps_extra
 			sudo $(MAKE) deps-extra-apt; \
 		fi; \
 	fi
+endef
+
+define set_generator_vars
+$(1): GENERATOR_COMPONENT = $$(shell yq .generator.component $(2).yml)
+$(1): GENERATOR_INPUTS_PROJECT_ID = $$(shell yq .generator.inputs.project_id $(2).yml)
+$(1): GENERATOR_INPUTS_PROJECT_NAME = $$(shell yq .generator.inputs.project_name $(2).yml)
+$(1): GENERATOR_INPUTS_PROJECT_DESC = $$(shell yq .generator.inputs.project_desc $(2).yml)
+$(1): GENERATOR_INPUTS_AUTHOR_NAME = $$(shell yq .generator.inputs.author_name $(2).yml)
+$(1): GENERATOR_INPUTS_AUTHOR_EMAIL = $$(shell yq .generator.inputs.author_email $(2).yml)
+$(1): GENERATOR_INPUTS_AUTHOR_URL = $$(shell yq .generator.inputs.author_url $(2).yml)
+$(1): GENERATOR_INPUTS_GITHUB_ID = $$(shell yq .generator.inputs.github_id $(2).yml)
+$(1): GENERATOR_INPUTS_GITHUB_REPO = $$(shell yq .generator.inputs.github_repo $(2).yml)
+$(1): GENERATOR_INPUTS_GITHUB_TOKEN_PREFIX = $$(shell yq .generator.inputs.github_token_prefix $(2).yml)
+endef
+
+define update_dotfiles_from_generator
+	cd stage/ && \
+	  rm -rf generator-$(1)/ && \
+	  git clone https://github.com/cliffano/generator-$(1) && \
+	  cd generator-$(1) && \
+	  make deps && \
+	  node_modules/.bin/plop $(GENERATOR_COMPONENT) -- \
+	    --project_id "$(GENERATOR_INPUTS_PROJECT_ID)" \
+		--project_name "$(GENERATOR_INPUTS_PROJECT_NAME)" \
+		--project_desc "$(GENERATOR_INPUTS_PROJECT_DESC)" \
+		--author_name "$(GENERATOR_INPUTS_AUTHOR_NAME)" \
+		--author_email "$(GENERATOR_INPUTS_AUTHOR_EMAIL)" \
+		--author_url "$(GENERATOR_INPUTS_AUTHOR_URL)" \
+		--github_id "$(GENERATOR_INPUTS_GITHUB_ID)" \
+		--github_repo "$(GENERATOR_INPUTS_GITHUB_REPO)" \
+		--github_token_prefix "$(GENERATOR_INPUTS_GITHUB_TOKEN_PREFIX)"
+	cd stage/generator-$(1)/stage/$(GENERATOR_COMPONENT) && \
+	  for dotfile in $(2); do \
+		cp -R "$$dotfile" ../../../../"$$dotfile"; \
+	  done
+endef
+
+define update_partials_from_generator
+	cd stage/ && \
+	  rm -rf generator-$(1)/ && \
+	  git clone https://github.com/cliffano/generator-$(1) && \
+	  cd generator-$(1) && \
+	  make deps && \
+	  node_modules/.bin/plop $(GENERATOR_COMPONENT)-partials -- \
+	    --project_id "$(GENERATOR_INPUTS_PROJECT_ID)" \
+		--project_name "$(GENERATOR_INPUTS_PROJECT_NAME)" \
+		--project_desc "$(GENERATOR_INPUTS_PROJECT_DESC)" \
+		--author_name "$(GENERATOR_INPUTS_AUTHOR_NAME)" \
+		--author_email "$(GENERATOR_INPUTS_AUTHOR_EMAIL)" \
+		--author_url "$(GENERATOR_INPUTS_AUTHOR_URL)" \
+		--github_id "$(GENERATOR_INPUTS_GITHUB_ID)" \
+		--github_repo "$(GENERATOR_INPUTS_GITHUB_REPO)" \
+		--github_token_prefix "$(GENERATOR_INPUTS_GITHUB_TOKEN_PREFIX)"
+	for block in $(2); do \
+	  partial_file=$$(printf "%s" "$$block" | tr "A-Z" "a-z"); \
+	  ex -s \
+	    -c "/<!-- BEGIN:$$block -->/+1,/<!-- END:$$block -->/-1d" \
+	    -c "/<!-- BEGIN:$$block -->/r stage/generator-$(1)/stage/$(GENERATOR_COMPONENT)-partials/$$partial_file.txt" \
+	    -c 'wq' \
+	    README.md; \
+	done
 endef
 
 ################################################################
@@ -101,54 +153,14 @@ update-to-version:
 	curl https://raw.githubusercontent.com/cliffano/cobbler/$(TARGET_COBBLER_VERSION)/src/Makefile-cobbler -o Makefile
 
 # Update dotfiles using the generator-ansible
-$(eval $(call set_generator_vars,update-dotfiles))
+$(eval $(call set_generator_vars,update-dotfiles,cobbler))
 update-dotfiles: stage
-	cd stage/ && \
-	  rm -rf generator-ansible/ && \
-	  git clone https://github.com/cliffano/generator-ansible && \
-	  cd generator-ansible && \
-	  make deps && \
-	  node_modules/.bin/plop $(GENERATOR_COMPONENT) -- \
-	    --project_id "$(GENERATOR_INPUTS_PROJECT_ID)" \
-		--project_name "$(GENERATOR_INPUTS_PROJECT_NAME)" \
-		--project_desc "$(GENERATOR_INPUTS_PROJECT_DESC)" \
-		--author_name "$(GENERATOR_INPUTS_AUTHOR_NAME)" \
-		--author_email "$(GENERATOR_INPUTS_AUTHOR_EMAIL)" \
-		--github_id "$(GENERATOR_INPUTS_GITHUB_ID)" \
-		--github_repo "$(GENERATOR_INPUTS_GITHUB_REPO)" \
-		--github_token_prefix "$(GENERATOR_INPUTS_GITHUB_TOKEN_PREFIX)"
-	cd stage/generator-ansible/stage/$(GENERATOR_COMPONENT) && \
-	  cp -R .github/* ../../../../.github/ && \
-	  cp .ansible-lint ../../../../.ansible-lint && \
-	  cp .gitignore ../../../../.gitignore && \
-	  cp .yamllint ../../../../.yamllint && \
-	  cp .rtk.json ../../../../.rtk.json
+	$(call update_dotfiles_from_generator,ansible,.github/. .ansible-lint .gitignore .yamllint .rtk.json)
 
 # Update partial snippets using the generator-ansible
-$(eval $(call set_generator_vars,update-partials))
+$(eval $(call set_generator_vars,update-partials,cobbler))
 update-partials: stage
-	cd stage/ && \
-	  rm -rf generator-ansible/ && \
-	  git clone https://github.com/cliffano/generator-ansible && \
-	  cd generator-ansible && \
-	  make deps && \
-	  node_modules/.bin/plop $(GENERATOR_COMPONENT)-partials -- \
-	    --project_id "$(GENERATOR_INPUTS_PROJECT_ID)" \
-		--project_name "$(GENERATOR_INPUTS_PROJECT_NAME)" \
-		--project_desc "$(GENERATOR_INPUTS_PROJECT_DESC)" \
-		--author_name "$(GENERATOR_INPUTS_AUTHOR_NAME)" \
-		--author_email "$(GENERATOR_INPUTS_AUTHOR_EMAIL)" \
-		--github_id "$(GENERATOR_INPUTS_GITHUB_ID)" \
-		--github_repo "$(GENERATOR_INPUTS_GITHUB_REPO)" \
-		--github_token_prefix "$(GENERATOR_INPUTS_GITHUB_TOKEN_PREFIX)"
-	for block in AVATAR BADGES BUILD_REPORTS DEVELOPERS_GUIDE; do \
-	  partial_file=$$(printf "%s" "$$block" | tr "A-Z" "a-z"); \
-	  ex -s \
-	    -c "/<!-- BEGIN:$$block -->/+1,/<!-- END:$$block -->/-1d" \
-	    -c "/<!-- BEGIN:$$block -->/r stage/generator-ansible/stage/$(GENERATOR_COMPONENT)-partials/$$partial_file.txt" \
-	    -c 'wq' \
-	    README.md; \
-	done
+	$(call update_partials_from_generator,ansible,AVATAR BADGES BUILD_REPORTS DEVELOPERS_GUIDE)
 
 lint:
 	mkdir -p docs/lint/
