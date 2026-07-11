@@ -8,16 +8,16 @@ jobs:
       - uses: actions/checkout@v7
         with:
           token: ${{ secrets.STUDIO_GITHUB_TOKEN }}
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v6
         with:
-          node-version: '24'
+          node-version: '26'
       - run: git config --global user.email "blah+pakkun@cliffano.com"
       - run: git config --global user.name "pakkunbot"
       - run: npm install -g bob@4
       - run: bob updep
       - uses: cliffano/command-docker-action@v1.4.0
         with:
-          image: cliffano/studio:2.11.1
+          image: cliffano/studio:3.2.0
           command: 'make ci'
       - run: git commit -am "Upgrade dependencies to latest"
       - uses: ad-m/github-push-action@v1.3.0
