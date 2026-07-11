@@ -31,7 +31,7 @@ test-ansible-role:
 		--github_repo "ansible-role" \
 		--github_token_prefix "STUDIO"
 	# git init is needed for Molecule to work properly
-	cd stage/ansible-role/ && git init -q && make ci
+	cd stage/ansible-role/ && git init -q && make deps ci
 
 ########################################
 # ansible-role-partials targets
