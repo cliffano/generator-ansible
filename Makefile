@@ -26,6 +26,7 @@ test-ansible-role:
 		--project_desc "A sample Ansible Role project" \
 		--author_name "Pakkun" \
 		--author_email "blah+pakkun@cliffano.com" \
+		--author_url "https://github.com/pakkunbot" \
 		--github_id "pakkunbot" \
 		--github_repo "ansible-role" \
 		--github_token_prefix "STUDIO"
@@ -49,6 +50,7 @@ test-ansible-role-partials:
 		--project_desc "A sample Ansible Role project" \
 		--author_name "Pakkun" \
 		--author_email "blah+pakkun@cliffano.com" \
+		--author_url "https://github.com/pakkunbot" \
 		--github_id "pakkunbot" \
 		--github_repo "ansible-role" \
 		--github_token_prefix "STUDIO"
