@@ -1,8 +1,4 @@
----
-description: "Standard Ansible role project conventions and tooling using Cobbler"
----
-
-# Ansible Role Project Standards
+# AGENTS.md
 
 This repository contains an Ansible role project following a unified standard
 for tooling, build automation, and coding conventions. All projects share the
@@ -45,10 +41,11 @@ project/
 ├── tasks/                  # Role task entry points
 ├── vars/                   # Role variables
 ├── .ansible-lint           # Ansible lint configuration
-├── .github/                # GitHub workflows & Copilot instructions
+├── .github/                # GitHub workflows
 ├── .gitignore              # Git ignore rules
 ├── .rtk.json               # RTK configuration
 ├── .yamllint               # YAML lint configuration
+├── AGENTS.md               # Agent instructions (this file)
 ├── CHANGELOG.md            # Changelog file following Keep a Changelog format
 ├── LICENSE                 # License file
 ├── Makefile                # Build automation (Cobbler)
@@ -96,24 +93,216 @@ You can run the container using: `docker run --rm --workdir /opt/workspace -v /v
 
 Alternatively you can run the Cobbler Makefile targets via Docker container entrypoint, e.g. `docker run --rm --workdir /opt/workspace -v /var/run/docker.sock:/var/run/docker.sock -v $PWD:/opt/workspace -i -t cliffano/studio make ci`.
 
-## Code Style, Testing, and Detailed Guidance
+## Code Style and Linting
 
-This file keeps the high-level project defaults. Detailed implementation rules
-live in scoped instruction files so they are only loaded when relevant.
+Applies to: `tasks/**/*.yml`, `defaults/**/*.yml`, `vars/**/*.yml`, `meta/**/*.yml`, `molecule/**/*.yml`, `examples/**/*.yml`, `examples/**/*.yaml`, `cobbler.yml`
 
-### Code Style and Linting
+### YAML Linting
 
-- YAML files are validated with `yamllint`
-- Ansible content is validated with `ansible-lint`
-- Detailed Ansible coding rules are in
-  `.github/instructions/ansible-code.instructions.md`
+All YAML files must pass `yamllint`:
 
-### Testing
+```bash
+make lint
+```
+
+Guidelines:
+
+- Use two-space indentation in YAML files
+- Keep task lists and mappings easy to scan
+- Quote strings when they contain Jinja expressions or special characters
+- Prefer explicit keys and readable task names
+
+### Ansible Lint
+
+All Ansible content must pass `ansible-lint`:
+
+```bash
+make lint
+```
+
+Guidelines:
+
+- Fix lint issues at the source rather than suppressing rules
+- Keep task names explicit for easier troubleshooting
+- Prefer module parameters over shell invocations when possible
+
+### Ansible Conventions
+
+- Use fully qualified collection names such as `ansible.builtin.copy`
+- Keep tasks idempotent
+- Prefer clear, descriptive `name` fields for every task
+- Store role defaults in `defaults/main.yml`
+- Store role overrides in `vars/main.yml`
+- Keep `meta/main.yml` minimal and accurate
+
+#### Idempotency and Safety
+
+- Avoid tasks that change state on every run
+- Use explicit file modes when writing files
+- Use `changed_when` only when default behavior is not accurate
+- Avoid shell commands for operations already covered by Ansible modules
+
+#### Variables and Templating
+
+- Keep role variables consistently named (for example `ans_*` prefix)
+- Put user-overridable values in `defaults/main.yml`
+- Reserve `vars/main.yml` for fixed role internals
+- Keep Jinja expressions readable and minimal inside YAML values
+
+#### Naming Conventions
+
+- **Role variables**: `snake_case` (for example `ans_transformation`)
+- **Task names**: imperative, action-oriented phrases
+- **Files**: standard role paths (`main.yml` under each role directory)
+
+### File Organization
+
+Typical generated role layout:
+
+```text
+role/
+├── defaults/main.yml
+├── vars/main.yml
+├── tasks/main.yml
+├── meta/main.yml
+├── molecule/default/
+└── examples/
+```
+
+Guidelines:
+
+- Keep role behavior in `tasks/main.yml`
+- Keep dependency and role metadata in `meta/main.yml`
+- Keep realistic usage examples in `examples/`
+
+### Molecule and Examples
+
+- Keep Molecule scenario files deterministic and easy to understand
+- Use `converge.yml` for role application and `tests/` for verification logic
+- Keep example playbooks simple and representative
+
+#### Molecule Conventions
+
+- Keep scenario setup focused on one role behavior set
+- Keep converge playbooks minimal and explicit
+- Ensure scenario tests verify observable end state, not internals
+
+### Error Handling
+
+- Prefer module-level validation and clear task naming over hidden failures
+- Fail early when required variables are missing
+- Keep role outputs predictable across repeated runs
+
+### Validation
+
+- Treat `ansible-lint` and `yamllint` errors as build failures
+- When changing role behavior, update both the Molecule scenario and the
+  example playbooks if needed
+- Keep role README usage aligned with default variable definitions
+
+## Testing
+
+Applies to: `molecule/**/*.py`
 
 - Molecule scenarios live in `molecule/`
 - Python verification tests live in `molecule/default/tests/`
 - Run tests with `make test`
-- Detailed testing rules are in `.github/instructions/testing.instructions.md`
+
+### Test Structure
+
+- Keep verification tests under `molecule/default/tests/`
+- Use `pytest` with the `testinfra` host fixture
+- Name tests after the behavior they verify
+
+#### Test Files
+
+```text
+molecule/default/tests/
+  conftest.py
+  test_defaults.py
+```
+
+Guidelines:
+
+- Keep tests grouped by role behavior domain
+- Keep each test file focused on one logical area
+
+### Test Style
+
+- Assert on observable system state such as files, packages, services, and
+  file contents
+- Keep tests deterministic and independent of external network access
+- Prefer direct assertions over complex helper abstractions
+
+#### Naming Conventions
+
+- **Files**: `test_<behaviour>.py`
+- **Functions**: `test_<scenario>_<expected_result>`
+- Prefer explicit scenario names (`test_upper_reverse_content_file_created`)
+
+#### Testinfra Pattern
+
+Use host-based assertions for infrastructure state:
+
+```python
+content_file = host.file("/tmp/output.txt")
+assert content_file.exists
+assert content_file.is_file
+assert content_file.mode == 0o644
+```
+
+### Test Assertions
+
+- Check file existence, type, permissions, and content explicitly
+- Verify role side effects exactly as the scenario expects them
+- Keep each test focused on one behavior or output artifact
+
+#### Assertion Pattern
+
+- Assert file attributes before asserting file contents
+- Use exact string assertions for deterministic generated content
+- Keep one primary expected outcome per test when possible
+
+### Pytest Execution
+
+Run the full suite:
+
+```bash
+make test
+```
+
+For focused troubleshooting, run a specific test file:
+
+```bash
+pytest molecule/default/tests/test_defaults.py -q
+```
+
+- If the generated project needs a git repository for Molecule, initialize it
+  before running the test target
+
+### Scenario Coverage Guidelines
+
+- Cover default variable behavior
+- Cover transformed output behavior and generated artifacts
+- Cover idempotent second-run behavior when feasible
+
+### CI Integration
+
+Tests are run as part of `make ci`:
+
+```bash
+make lint
+make test
+```
+
+All tests must pass before merging.
+
+### Common Pitfalls
+
+1. Asserting only file existence without verifying contents
+2. Using non-deterministic values in expected output assertions
+3. Coupling tests to internal implementation details
+4. Forgetting that Molecule may require a git repository for proper execution
 
 ## Continuous Integration Pipeline
 
