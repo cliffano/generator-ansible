@@ -19,4 +19,4 @@ jobs:
       - uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: $\{{ secrets.{{github_token_prefix}}_GITHUB_TOKEN }}
-          publish_dir: docs
+          publish_dir: stage/gh-pages

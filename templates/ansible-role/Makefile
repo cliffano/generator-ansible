@@ -163,14 +163,14 @@ update-partials: stage
 	$(call update_partials_from_generator,ansible,AVATAR BADGES BUILD_REPORTS DEVELOPERS_GUIDE)
 
 lint:
-	mkdir -p docs/lint/
-	$(call python_venv,ansible-lint tasks/ &> docs/lint/ansible-lint.txt)
+	mkdir -p stage/gh-pages/lint/
+	$(call python_venv,ansible-lint tasks/ &> stage/gh-pages/lint/ansible-lint.txt)
 	$(call python_venv,yamllint .)
- 
+
 test:
 	$(call run_hook,x-pre-test)
-	mkdir -p docs/test/
-	$(call python_venv,molecule test > docs/test/molecule.txt)
+	mkdir -p stage/gh-pages/test/
+	$(call python_venv,molecule test > stage/gh-pages/test/molecule.txt)
 
 test-examples:
 	mkdir -p stage/test-examples/
