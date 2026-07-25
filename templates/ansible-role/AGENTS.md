@@ -345,7 +345,7 @@ The `-A` flag ensures **all modified and new files** are staged for commit. With
 
 ### Pakkunbot Identity
 
-The `git -c include.path=~/.gitconfig-pakkunbot` flag uses a separate Git configuration file (`~/.gitconfig-pakkunbot`) containing the Pakkun Pakkun bot identity (email: blah+pakkun@cliffano.com). This avoids modifying the repository's git configuration and keeps commits attributed to the bot account rather than your personal account.
+The `git -c include.path=~/.gitconfig-pakkunbot` flag uses a separate Git configuration file (`~/.gitconfig-pakkunbot`) containing the Pakkun Pakkun bot identity (email: pakkunbot@users.noreply.github.com). This avoids modifying the repository's git configuration and keeps commits attributed to the bot account rather than your personal account.
 
 **Always include this flag for all git operations** (add, commit, push, pull):
 
