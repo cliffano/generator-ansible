@@ -1,8 +1,12 @@
+<!-- BEGIN:AVATAR -->
 ![Avatar](avatar.jpg)
+<!-- END:AVATAR -->
 
+<!-- BEGIN:BADGES -->
 [![Build Status](https://github.com/cliffano/generator-ansible/workflows/CI/badge.svg)](https://github.com/cliffano/generator-ansible/actions?query=workflow%3ACI)
 [![Code Scanning Status](https://github.com/cliffano/generator-ansible/workflows/CodeQL/badge.svg)](https://github.com/cliffano/generator-ansible/actions?query=workflow%3ACodeQL)
 [![Security Status](https://snyk.io/test/github/cliffano/generator-ansible/badge.svg)](https://snyk.io/test/github/cliffano/generator-ansible)
+<!-- END:BADGES -->
 
 # Generator-Ansible
 
@@ -38,6 +42,15 @@ Both components will prompt you the following inputs:
 | GitHub Actions token prefix | Prefix for the GitHub token secret used in GitHub Actions workflows. |
 
 ## Colophon
+
+<!-- BEGIN:DEVELOPERS_GUIDE -->
+[Developer's Guide](https://cliffano.github.io/developers-guide-makefile.html)
+<!-- END:DEVELOPERS_GUIDE -->
+
+<!-- BEGIN:BUILD_REPORTS -->
+Build reports:
+
+<!-- END:BUILD_REPORTS -->
 
 Related Projects:
 
