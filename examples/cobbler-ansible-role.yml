@@ -1,0 +1,15 @@
+---
+package_name: ansible_role
+author: Pakkun
+generator:
+  component: ansible-role
+  inputs:
+    project_id: ansible_role
+    project_name: AnsibleRole
+    project_desc: A sample Ansible Role project
+    author_name: Pakkun
+    author_email: pakkunbot@users.noreply.github.com
+    author_url: https://github.com/pakkunbot
+    github_id: pakkunbot
+    github_repo: ansible-role
+    github_token_prefix: STUDIO

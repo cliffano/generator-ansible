@@ -17,6 +17,7 @@ It provides the following components:
 | Component | Description |
 |-----------|-------------|
 | ansible-role | Generate an Ansible Role project. |
+| ansible-role-partials | Generate README partial snippets for Ansible Role projects. |
 
 All components are built using [Makefile](https://en.wikipedia.org/wiki/Make_(software)).
 
@@ -26,6 +27,12 @@ Generate Ansible Role project:
 
 ```shell
 make generate-ansible-role
+```
+
+Generate Ansible Role partial snippets:
+
+```shell
+make generate-ansible-role-partials
 ```
 
 Both components will prompt you the following inputs:
@@ -40,6 +47,17 @@ Both components will prompt you the following inputs:
 | GitHub ID | The GitHub ID of the project repo. |
 | GitHub Repository | The GitHub repository name. |
 | GitHub Actions token prefix | Prefix for the GitHub token secret used in GitHub Actions workflows. |
+
+## Usage With Config File
+
+Each component also has a `-with-config` target that skips the interactive prompts by reading the inputs from a Cobbler YAML config file. See [examples/](examples/) for sample config files for each component.
+
+Pass the config file path via the `GENERATOR_CONFIG` variable, it defaults to `cobbler.yml`:
+
+```shell
+make generate-ansible-role-with-config GENERATOR_CONFIG=path/to/cobbler.yml
+make generate-ansible-role-partials-with-config GENERATOR_CONFIG=path/to/cobbler.yml
+```
 
 ## Colophon
 
