@@ -318,7 +318,9 @@ After the code is merged, the CI pipeline will run as GitHub CI workflow.
 
 ## Git Workflow: Branches, Commits, and Pull Requests
 
-**Note**: These instructions apply to **local machine development only**. When working with GitHub Actions or other CI/CD environments, the git configuration and pakkunbot identity setup is not available. These steps assume you are developing on your local machine where `~/.gitconfig-pakkunbot` exists.
+**Before performing any git operations below, ask for confirmation on which bot identity to use.** The currently available options are `pakkunbot` and `hakubot0`, corresponding to `~/.gitconfig-pakkunbot` and `~/.gitconfig-hakubot0`. Substitute `<bot>` throughout this section with the confirmed choice.
+
+**Note**: These instructions apply to **local machine development only**. When working with GitHub Actions or other CI/CD environments, the git configuration and `<bot>` identity setup is not available. These steps assume you are developing on your local machine where `~/.gitconfig-<bot>` exists.
 
 ### Creating and Working with Feature Branches
 
@@ -330,34 +332,34 @@ git checkout -b feature/your-feature-name
 make ci
 
 # Stage ALL changes (critical: never forget this step)
-git -c include.path=~/.gitconfig-pakkunbot add -A
+git -c include.path=~/.gitconfig-<bot> add -A
 
-# Commit with Pakkun Pakkun identity (pakkunbot) via gitconfig override
-git -c include.path=~/.gitconfig-pakkunbot commit -m "Your clear commit message"
+# Commit with the confirmed bot identity via gitconfig override
+git -c include.path=~/.gitconfig-<bot> commit -m "Your clear commit message"
 
 # Push to remote
-git -c include.path=~/.gitconfig-pakkunbot push
+git -c include.path=~/.gitconfig-<bot> push
 ```
 
 ### Why `git add -A`
 
 The `-A` flag ensures **all modified and new files** are staged for commit. Without it, changes can be missed (as discovered during development), causing incomplete commits and failed CI runs. Always explicitly run `git add -A` before committing.
 
-### Pakkunbot Identity
+### Bot Identity
 
-The `git -c include.path=~/.gitconfig-pakkunbot` flag uses a separate Git configuration file (`~/.gitconfig-pakkunbot`) containing the Pakkun Pakkun bot identity (email: pakkunbot@users.noreply.github.com). This avoids modifying the repository's git configuration and keeps commits attributed to the bot account rather than your personal account.
+The `git -c include.path=~/.gitconfig-<bot>` flag uses a separate Git configuration file (`~/.gitconfig-<bot>`) containing the confirmed bot's identity. This avoids modifying the repository's git configuration and keeps commits attributed to the bot account rather than your personal account.
 
 **Always include this flag for all git operations** (add, commit, push, pull):
 
 ```bash
-git -c include.path=~/.gitconfig-pakkunbot add -A
-git -c include.path=~/.gitconfig-pakkunbot commit -m "message"
-git -c include.path=~/.gitconfig-pakkunbot push
+git -c include.path=~/.gitconfig-<bot> add -A
+git -c include.path=~/.gitconfig-<bot> commit -m "message"
+git -c include.path=~/.gitconfig-<bot> push
 ```
 
 ### Pull Request Process
 
-1. **Push your feature branch** to the remote using the pakkunbot identity (see above).
+1. **Push your feature branch** to the remote using the confirmed bot identity (see above).
 2. **Open a pull request** on GitHub targeting `main`.
 3. **Ensure all CI checks pass** (lint, tests, coverage, etc.). If any check fails, fix the issue locally and re-run `make ci`, then stage/commit/push again.
 4. **Request review** from project maintainers.
