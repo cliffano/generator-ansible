@@ -190,6 +190,15 @@ $(eval $(call set_generator_vars,update-partials,$(UPDATE_MAKEFILE)))
 update-partials: stage
 	$(call update_partials_from_generator,$(UPDATE_GENERATOR),$(UPDATE_PARTIALS))
 
+release-major:
+	rtk release --release-increment-type major
+
+release-minor:
+	rtk release --release-increment-type minor
+
+release-patch:
+	rtk release --release-increment-type patch
+
 ################################################################
 
-.PHONY: $(1) ci all stage clean rmdeps deps deps-upgrade deps-extra-apt lint test test-examples update-to-latest update-to-main update-to-version update-dotfiles update-partials
+.PHONY: $(1) ci all stage clean rmdeps deps deps-upgrade deps-extra-apt lint test test-examples update-to-latest update-to-main update-to-version update-dotfiles update-partials release-major release-minor release-patch
