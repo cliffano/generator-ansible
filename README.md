@@ -10,7 +10,7 @@
 
 # Generator-Ansible
 
-Generator-Ansible is an Ansible projects generator using [Plop](https://plopjs.com/).
+Generator-Ansible is a code generator for Ansible projects.
 
 It provides the following components:
 
